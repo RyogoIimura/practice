@@ -17,7 +17,7 @@
 ## 納品モード
 `yarn build`
 
-## 新規プロジェクト作成の際、変更する箇所(new_project は任意の名前)
+## 新規プロジェクト作成の際、変更する箇所(`new_project` は任意の名前)
 ### pug
    * src/pug/_data/`new_project`/data.pug
    * src/pug/dir/`new_project`/_modules/content.pug
