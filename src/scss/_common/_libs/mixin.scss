@@ -1,0 +1,15 @@
+@use 'sass:math';
+@use 'easings' as *;
+
+// responsive
+$baseWidth-pc : 1280;
+@function vw_pc($PixelsVw-pc) {
+  @return calc( $PixelsVw-pc / $baseWidth-pc ) * 100vw;
+}
+
+$baseWidth-sp : 750;
+@function vw($PixelsVw-sp) {
+  @return calc( $PixelsVw-sp / $baseWidth-sp ) * 100vw;
+}
+
+$BREAKPOINT: 736px;

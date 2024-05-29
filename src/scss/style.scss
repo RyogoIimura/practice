@@ -1,0 +1,17 @@
+@charset "utf-8";
+@use 'sass:math';
+@use './_common/_libs/mixin' as *;
+@use './_common/_libs/easings' as *;
+@use './_common/_libs/font' as *;
+
+
+.content {
+
+  // animation
+  &.animation {}
+}
+
+@media screen and (max-width: ($BREAKPOINT)) {
+
+  .content {}
+}

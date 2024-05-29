@@ -1,0 +1,36 @@
+extends ./_layout/layout
+
+block head
+  link(href=`./assets/css/common.css?${now.getTime()}` rel='stylesheet' type='text/css')
+  link(href=`./assets/css/style.css?${now.getTime()}` rel='stylesheet' type='text/css')
+
+  //- Web フォント
+  .
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+
+block data
+  -
+    const meta = {
+      title : 'PRACTICE',
+      description: '練習用のサイトです',
+      type: 'website',
+      ogPath: `/assets/images/og.png?${now.getTime()}`,
+    }
+  include ./_data/top/data
+
+block content
+  -
+    const IMG_PATH = `./assets/images/${PAGE.name}/`;
+
+  .wrapper#wrapper
+    include ./_modules/header
+
+    include ./_modules/content
+
+    include ./_modules/footer
+
+block script
+  script(src=`./assets/js/common.js?${now.getTime()}` defer)
+  script(src=`./assets/js/index.js?${now.getTime()}` defer)

@@ -1,0 +1,19 @@
+
+block data
+  -
+    const meta = {
+      title : 'PRACTICE',
+      description: '練習用のサイトです',
+      type: 'website',
+      ogPath: `/assets/images/og.png?${now.getTime()}`,
+    }
+
+<!DOCTYPE html>
+html(lang="ja")
+  head
+    include head
+    block head
+
+  body
+    block content
+    block script

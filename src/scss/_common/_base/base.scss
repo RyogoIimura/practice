@@ -1,0 +1,59 @@
+@use 'sass:math';
+@use '../_libs/mixin' as *;
+@use '../_libs/easings' as *;
+
+html{
+  font-family: 'Hiragino Kaku Gothic Pro', 'メイリオ', 'ＭＳ Ｐゴシック', -apple-system, BlinkMacSystemFont, sans-serif;
+  // min-width: 1080px;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'palt';
+  line-height: 1;
+  color: #000;
+
+  ::selection {
+    background-color: #666;
+  }
+}
+
+body {
+  text-size-adjust: 100%;
+
+  .wrapper {
+    overflow: hidden;
+
+    .content {
+      margin: 160px 0;
+    }
+  }
+}
+
+.SP {
+  display: none !important;
+}
+
+
+@media screen and (max-width: ($BREAKPOINT)) {
+
+  html{
+    min-width: initial;
+    width: 100%;
+  }
+
+  body {
+
+    .wrapper {
+
+      .content {
+        margin: calc(vw(94) + 16px) 0;
+      }
+    }
+  }
+
+  .PC {
+    display: none !important;
+  }
+
+  .SP {
+    display: block !important;
+  }
+}

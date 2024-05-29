@@ -1,0 +1,28 @@
+-
+  const LINK = {
+    top: './',
+    cont: [
+      {
+        path: './nav/',
+        name: "nav",
+      }
+    ]
+  }
+
+.header#header
+  .hamburger_wrapper.SP
+    .hamburger#hamburger
+      .line.line_1
+      .line.line_2
+      .line.line_3
+
+  .nav_wrapper
+    .nav
+      -if( PAGE.name == 'top')
+        a(href=`${LINK.top}`) TOP
+        -for( i = 0; i < LINK.cont.length; i++ )
+          a(href=`${LINK.cont[i].path}`)!=LINK.cont[i].name
+      -else
+        a(href=`.${LINK.top}`) TOP
+        -for( i = 0; i < LINK.cont.length; i++ )
+          a(href=`.${LINK.cont[i].path}`)!=LINK.cont[i].name

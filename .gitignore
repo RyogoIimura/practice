@@ -1,0 +1,8 @@
+node_modules
+
+dist/**/*.css
+dist/**/*.js
+dist/**/*.html
+
+# gitignoreを更新する際に使う
+# git rm -r --cached .
