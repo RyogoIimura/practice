@@ -19,13 +19,13 @@
 
 ## 新規プロジェクト作成の際、変更する箇所(new_project は任意の名前)
 ### pug
-   * src/pug/_data/new_project/data.pug
-   * src/pug/dir/new_project/_modules/content.pug
-   * src/pug/dir/new_project/index.pug
+   * src/pug/_data/`new_project`/data.pug
+   * src/pug/dir/`new_project`/_modules/content.pug
+   * src/pug/dir/`new_project`/index.pug
    * src/pug/_modules/header.pug
 
 ### scss
-  * src/scss/dir/new_project.scss
+  * src/scss/dir/`new_project`.scss
 
 ### js
-  * src/js/dir/new_project.js
+  * src/js/dir/`new_project`.js
