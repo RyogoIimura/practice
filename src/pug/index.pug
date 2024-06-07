@@ -1,8 +1,8 @@
 extends ./_layout/layout
 
 block head
-  link(href=`./assets/css/common.css?${now.getTime()}` rel='stylesheet' type='text/css')
-  link(href=`./assets/css/style.css?${now.getTime()}` rel='stylesheet' type='text/css')
+  link(href=`./assets/css/common.css?${DATE}` rel='stylesheet' type='text/css')
+  link(href=`./assets/css/style.css?${DATE}` rel='stylesheet' type='text/css')
 
   //- Web フォント
   .
@@ -16,7 +16,7 @@ block data
       title : 'PRACTICE',
       description: '練習用のサイトです',
       type: 'website',
-      ogPath: `/assets/images/og.png?${now.getTime()}`,
+      ogPath: `/assets/images/og.png?${DATE}`,
     }
   include ./_data/top/data
 
@@ -32,5 +32,5 @@ block content
     include ./_modules/footer
 
 block script
-  script(src=`./assets/js/common.js?${now.getTime()}` defer)
-  script(src=`./assets/js/index.js?${now.getTime()}` defer)
+  script(src=`./assets/js/common.js?${DATE}` defer)
+  script(src=`./assets/js/index.js?${DATE}` defer)

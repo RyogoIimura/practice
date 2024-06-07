@@ -1,162 +1,177 @@
-const {
-  src, dest, watch, series, parallel,
-} = require('gulp');
+const { src, dest, watch, series, parallel } = require("gulp");
+// 直列処理(順番に処理):series(), 並列処理（順番を問わない）:parallel()
 const pug = require('gulp-pug');
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
 const plumber = require('gulp-plumber');
-const notifier = require('node-notifier');
 const postcss = require('gulp-postcss');
-const gulpCopy = require('gulp-copy')
 const autoprefixer = require('autoprefixer');
-const cssdeclsort = require('css-declaration-sorter');
-const sassGlob = require('gulp-sass-glob');
-const gcmq = require('gulp-group-css-media-queries');
-const cleanCSS = require('gulp-clean-css');
-const fibers = require('fibers');
+const notifier = require('node-notifier');
+const sassGlob = require('gulp-sass-glob'); // @importを纏めて指定
 const browserSync = require('browser-sync');
-const rename = require('gulp-rename');
-const connectPhp = require('gulp-connect-php');
-sass.compiler = require('sass');
+const minimist = require("minimist");
+const gcmq = require('gulp-group-css-media-queries'); // media queryを纏める
+const mode = require('gulp-mode')({
+  modes: ['production', 'development'], // 本番実装時は 'gulp --production'
+  default: 'development',
+  verbose: false,
+})
 
-const minimist = require('minimist');
+const errorHandler = function (error) {
+  notifier.notify({
+    title: 'エラー発生！',
+    message: error.message,
+    sound: true
+  }, function () {
+    console.log(error.message);
+  });
+};
+
+notifier.notify({
+  title: 'Gulp',
+  message: 'watchを開始します！',
+});
+
 
 const options = minimist(process.argv.slice(2), {
   string: 'env',
-  default: { env: 'development' },
+  default: { env: 'development' }
 });
 
-const PROD = options.env === 'build';
-const BREAKPOINT = 736;
-const PROTOCOL = 'https';
-const SERVER_NAME = '';
+const isProduction = options.env === 'prod'; // リリース時ならtrue
+const isTestup = options.env === 'testup'; // リリース時ならtrue
 
-const CSS_DIR = 'assets/css/';
-const JS_DIR = 'assets/js/';
-const IMG_DIR = 'assets/images/';
+let DEV_MODE = true;
+let ITEM_API = false;
+if(isProduction){
+  DEV_MODE = false
+  ITEM_API = true
+}
+if(isTestup){
+  ITEM_API = true
+}
+let CDN = '';
+if (!DEV_MODE) {
+  CDN = '//cdn1.beams.co.jp';
+}
 
-const ROOT = './dist/';
-const DIR = '';
-const HOST_NAME = `${PROTOCOL}://${SERVER_NAME}`;
-const CANONICAL_ROOT = `${HOST_NAME}`;
+// const CONTENT_NAME = "prj-name";
 
-const errorHandler = (error) => {
-  notifier.notify(
-    {
-      title: 'エラー発生！',
-      message: error.message,
-      sound: true,
-    },
-    () => {
-      console.log(error.message);
-    },
-  );
-};
+const PORT = 3000,
+  WATCH_INTERVAL = 800,
+  PROTOCOL = 'https',
+  SERVER_NAME = '',
+  // SERVER_NAME = 'www.beams.co.jp',
+  HOST_NAME = PROTOCOL + '://' + SERVER_NAME,
+
+  ROOT = 'dist',
+  DIR = '',
+  // DIR = "/special/"+CONTENT_NAME,
+  CANONICAL_ROOT = HOST_NAME + (DIR ? DIR : ''),
+
+  INDEX_DIR = ROOT + DIR,
+  CSS_DIR = "/assets/css/",
+  JS_DIR = "/assets/js/",
+  IMG_DIR = "/assets/images/",
+  BREAKPOINT = 768;
+
+  DATE = new Date().getTime();
 
 
-const compilePug = (done) => {
-  src(
-    [
-      'src/pug/**.pug',
-      'src/pug/dir/**/**.pug',
-
-      '!src/pug/**/**/_*/**.pug',
-      '!src/pug/_*/**.pug',
-      '!src/pug/_*/**/**.pug',
-    ],
-    { sourcemaps: PROD ? false : true },
-  )
-    .pipe(plumber({ errorHandler }))
-    .pipe(
-      pug({
-        pretty: true,
-        locals: {
-          PROD,
-          DIR,
-          CSS_DIR: `${CSS_DIR}`,
-          JS_DIR: `${JS_DIR}`,
-          IMG_DIR: `${IMG_DIR}`,
-          BREAKPOINT,
-          CANONICAL_ROOT,
-          now: new Date(),
-        },
-      }),
-    )
-    // .pipe(rename(path => path.extname = '.php'))
-    .pipe(dest(`${ROOT}`) /* , { sourcemaps: './sourcemaps'} */);
-  done();
-};
-
-const compileSass = (done) => {
-  const postcssPlugins = [
-    autoprefixer({
-      cascade: false,
-    }),
-    cssdeclsort({ order: 'alphabetical' /* smacss, concentric-css */ }),
-  ];
-  src([
-    'src/scss/**.scss',
-    'src/scss/**/**.scss',
-
-    '!src/scss/_*/_*/**.scss',
-  ], { sourcemaps: false })
-    .pipe(plumber({ errorHandler }))
-    .pipe(sassGlob())
-    .pipe(sass({
-      fiber: fibers,
-      outputStyle: 'compressed',
+////////////// pug //////////////////// -->
+const compilePug = done => {
+  src(['src/pug/dir/**/*.pug', '!src/pug/_**/*.pug', '!src/pug/**/_**/*.pug', '!src/pug/**/_*.pug'])
+    .pipe(plumber({ errorHandler: errorHandler }))
+    .pipe(pug({
+      pretty: false,
+      locals: {
+        DIR: DIR,
+        CSS_DIR: CSS_DIR,
+        JS_DIR: JS_DIR,
+        IMG_DIR: IMG_DIR,
+        BREAKPOINT: BREAKPOINT,
+        CANONICAL_ROOT: CANONICAL_ROOT,
+        DEV_MODE: DEV_MODE,
+        CDN: CDN,
+        ITEM_API: ITEM_API,
+        DATE: DATE
+      }
     }))
-    .pipe(postcss(postcssPlugins))
-    .pipe(gcmq())
-    .pipe(cleanCSS({ rebase: false }))
-    .pipe(dest(`${ROOT}assets/css/`) /* , { sourcemaps: './sourcemaps'} */);
+    .pipe(dest(INDEX_DIR));
+
   done(); // 終了宣言
+}
+
+
+////////////// sass //////////////////// -->
+const compileSass = done => {
+  src(["src/scss/dir/**/**.scss"])
+    .pipe(plumber({ errorHandler: errorHandler }))
+    .pipe(sassGlob())
+    .pipe(sass({outputStyle: 'compressed'}))
+    .pipe(
+      postcss([
+        autoprefixer({
+          cascade: false,
+          grid: true
+        })
+      ])
+    )
+    // .pipe(mode.production(gcmq()))
+    .pipe(dest(INDEX_DIR));
+
+  done(); // 終了宣言
+}
+
+
+////////////// webpack //////////////////// -->
+const webpack = require("webpack");
+const webpackStream = require("webpack-stream");
+// webpackの設定ファイルの読み込み
+const webpackConfigDev = require("./webpack.config");
+// const webpackConfigDev = require('./webpack.dev');
+const webpackConfigProd = require('./webpack.prod');
+const webpackConfig = isProduction || isTestup ? webpackConfigProd : webpackConfigDev;
+
+const bundleJs = () => {
+  // webpackStreamの第2引数にwebpackを渡す
+  return webpackStream(webpackConfig, webpack)
+    .pipe(plumber({ errorHandler: errorHandler }))
+    .on('error', function (e) {
+      this.emit('end');
+      errorHandler(e);
+    })
+    .pipe(dest(INDEX_DIR));
 };
 
-const buildServer = (done) => {
-  const PORT = 3000;
 
-  connectPhp.server({
-    base: ROOT,
-    port: PORT,
-  }, () => {
-    browserSync.init({
-      proxy: 'localhost:' + PORT,
-      logLevel: 'silent',
-      notify: false,
-      startPath: DIR,
-    })
-  })
+
+
+////////////// server //////////////////// -->
+const watchServer = done => {
+  browserSync({
+    files: ROOT+'/**/*',
+    startPath: DIR,
+    reloadDelay: WATCH_INTERVAL,
+    server: {
+      baseDir: ROOT // ルートとなるディレクトリを指定
+    }
+  });
 
   done();
-};
+}
 
-
+// ブラウザ自動リロード
 const browserReload = (done) => {
   browserSync.reload();
   done();
 };
 
+
+// ファイル監視
 const watchFiles = () => {
-  watch(['src/pug/*.pug'], series(compilePug, browserReload));
-  watch(['src/pug/**/**/*.pug'], series(compilePug, browserReload));
-  watch(['src/pug/_*/*.pug'], series(compilePug, browserReload));
-
-  watch(['src/scss/*.scss'], series(compileSass, browserReload));
-  watch(['src/scss/**/*.scss'], series(compileSass, browserReload));
-  watch(['src/scss/_*/_*/*.scss'], series(compileSass, browserReload));
-
-  watch(['src/js/*.js'], series(browserReload));
-  watch(['src/js/**/*.js'], series(browserReload));
-  watch(['src/js/_*/*.js'], series(browserReload));
-};
-
-if (PROD) {
-  exports.default = series(
-    parallel(compilePug, compileSass),
-  );
-} else {
-  exports.default = series(
-    parallel(compilePug, compileSass),
-    parallel(buildServer, watchFiles),
-  );
+  watch(['src/pug/**/*.pug'], series(compilePug))
+  watch(['src/scss/**/*.scss','src/scss/**/*.sass','src/scss/**/*.css',], series(compileSass))
+  watch(['src/babel/**/*.js',], series(bundleJs,browserReload))
 }
+
+exports.default = parallel(watchServer,watchFiles,compilePug,compileSass,bundleJs);
