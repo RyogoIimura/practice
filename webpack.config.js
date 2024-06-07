@@ -2,11 +2,11 @@ const  path = require('path');
 const  glob = require("glob");
 const TerserPlugin = require("terser-webpack-plugin");
 
-const SRC_PATH    = path.resolve(__dirname, 'src/babel/dir/');
-const DIST_PATH = path.resolve(__dirname, 'dist/assets/js/');
+const SRC_PATH    = path.resolve(__dirname, 'src/js');
+const DIST_PATH = path.resolve(__dirname, 'dist/assets/js');
 
 const entries = glob.sync("**/*.js", {
-  ignore: ["_*/**.js", "**/_*/**.js", "_*/**/**.js"],
+  ignore: ["_*/**.js"],
   cwd: SRC_PATH,
 }).map(key => {
   return [key, path.resolve(SRC_PATH, key)]// [ '**/*.js' , './src/**/*.js' ]という形式の配列になる
@@ -29,7 +29,7 @@ module.exports = {
   // ファイルの出力設定
   output: {
     // 出力ファイル名
-    // path: DIST_PATH,
+    path: DIST_PATH,
     filename: "[name]"
   },
 
