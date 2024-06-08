@@ -69,9 +69,9 @@ const PORT = 3000,
   CANONICAL_ROOT = HOST_NAME + (DIR ? DIR : ''),
 
   // INDEX_DIR = ROOT + DIR,
-  CSS_DIR = "/assets/css/",
-  JS_DIR = "/assets/js/",
-  IMG_DIR = "/assets/images/",
+  CSS_DIR = "assets/css/",
+  JS_DIR = "assets/js/",
+  IMG_DIR = "assets/images/",
   BREAKPOINT = 736;
 
 
@@ -82,7 +82,7 @@ const compilePug = done => {
       'src/pug/**.pug',
       'src/pug/dir/**/**.pug',
 
-      '!src/pug/**/**/_*/**.pug',
+      '!src/pug/dir/**/_*/**.pug',
       '!src/pug/_*/**.pug',
       '!src/pug/_*/**/**.pug',
     ]
@@ -112,9 +112,12 @@ const compilePug = done => {
 ////////////// sass //////////////////// -->
 const compileSass = done => {
   src(
-    'src/scss/**.scss',
-    'src/scss/dir/**.scss',
-    '!src/scss/_*/_*/**.scss',
+    [
+      'src/scss/**.scss',
+      'src/scss/**/**.scss',
+
+      '!src/scss/_*/_*/**.scss',
+    ]
   )
     .pipe(plumber({ errorHandler: errorHandler }))
     .pipe(sassGlob())
