@@ -4,7 +4,7 @@ const initialize = () => {
 };
 
 const opening = () => {
-  console.log('load');
+  // console.log('load');
 
   setTimeout (() => {
     const content = document.getElementById("content");

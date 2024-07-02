@@ -1,6 +1,6 @@
 
 ## node-version
-`14.4.0`
+`v16.14.0`
 
 ## node_modules インストール
 `yarn`
