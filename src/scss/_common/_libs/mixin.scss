@@ -12,4 +12,4 @@ $baseWidth-sp : 750;
   @return calc( $PixelsVw-sp / $baseWidth-sp ) * 100vw;
 }
 
-$BREAKPOINT: 736px;
+$BREAKPOINT: 768px;

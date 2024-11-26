@@ -1,16 +1,16 @@
 import gsap from 'gsap'
 import { ScrollToPlugin } from "gsap/ScrollToPlugin"
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 window.gsap = gsap
 gsap.registerPlugin(ScrollToPlugin)
 gsap.registerPlugin(ScrollTrigger);
-import Header from './_common/Header';
-import Footer from './_common/Footer';
 
+import CommonUi from './_common/CommonUi';
 
 const loaded = () => {
-  Header();
-  Footer();
+  const commonUi = new CommonUi();
+  commonUi.init();
 };
 
 window.addEventListener('load', loaded);

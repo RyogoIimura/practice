@@ -5,13 +5,13 @@
 @use './_common/_libs/font' as *;
 
 
-.content {
+.contents {
 
   // animation
   &.animation {}
 }
 
-@media screen and (max-width: ($BREAKPOINT)) {
+@media screen and (min-width: ($BREAKPOINT)) {
 
-  .content {}
+  .contents {}
 }

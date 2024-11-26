@@ -5,15 +5,14 @@
 @use '../_common/_libs/font' as *;
 
 
-.content {
+.contents {
   width: 100vw;
   height: 100vh;
   background-color: #00ffff;
 }
 
-@media screen and (max-width: ($BREAKPOINT)) {
-
-  .content {
+@media screen and (min-width: ($BREAKPOINT)) {
+  .contents {
     background-color: #ff0000;
   }
 }

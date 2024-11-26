@@ -5,11 +5,6 @@ const initialize = () => {
 
 const opening = () => {
   console.log('load');
-
-  setTimeout (() => {
-    const content = document.getElementById("content");
-    content.classList.add("animation");
-  },1000)
 }
 
 window.addEventListener('DOMContentLoaded', initialize);

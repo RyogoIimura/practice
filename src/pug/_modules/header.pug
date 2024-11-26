@@ -1,5 +1,5 @@
 -
-  const LINK = {
+  const link = {
     top: './',
     cont: [
       {
@@ -10,19 +10,24 @@
   }
 
 .header#header
-  .hamburger_wrapper.SP
-    .hamburger#hamburger
-      .line.line_1
-      .line.line_2
-      .line.line_3
+  -if( page.name == 'top')
+    a.header_logo(href=`${link.top}`) TOP
+  -else
+    a.header_logo(href=`.${link.top}`) TOP
 
-  .nav_wrapper
-    .nav
-      -if( PAGE.name == 'top')
-        a(href=`${LINK.top}`) TOP
-        -for( i = 0; i < LINK.cont.length; i++ )
-          a(href=`${LINK.cont[i].path}`)!=LINK.cont[i].name
+  .nav_bg#nav_bg.navBtn
+
+  .nav#nav
+    .nav_container
+      -if( page.name == 'top')
+        -for( i = 0; i < link.cont.length; i++ )
+          a(href=`${link.cont[i].path}`): p!=link.cont[i].name
       -else
-        a(href=`.${LINK.top}`) TOP
-        -for( i = 0; i < LINK.cont.length; i++ )
-          a(href=`.${LINK.cont[i].path}`)!=LINK.cont[i].name
+        -for( i = 0; i < link.cont.length; i++ )
+          a(href=`.${link.cont[i].path}`): p!=link.cont[i].name
+
+  .hamburger.navBtn
+    .hamburger_container
+      .line.hamburgerLine1
+      .line.hamburgerLine2
+      .line.hamburgerLine3

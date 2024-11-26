@@ -51,7 +51,7 @@ const options = minimist(process.argv.slice(2), {
 // }
 // let CDN = '';
 // if (!DEV_MODE) {
-//   CDN = '//cdn1.beams.co.jp';
+//   CDN = '';
 // }
 
 // const CONTENT_NAME = "prj-name";
@@ -60,7 +60,7 @@ const PORT = 3000,
   WATCH_INTERVAL = 800,
   PROTOCOL = 'https',
   HOST_NAME = PROTOCOL + '://',
-  // SERVER_NAME = 'www.beams.co.jp',
+  // SERVER_NAME = '',
   // HOST_NAME = PROTOCOL + '://' + SERVER_NAME,
 
   ROOT = 'dist',

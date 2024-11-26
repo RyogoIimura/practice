@@ -1,7 +1,7 @@
 {
-  "name": "beams-template",
+  "name": "practice-template",
   "version": "1.0.0",
-  "description": "beams-template",
+  "description": "practice-template",
   "main": "gulpfile.js",
   "private": true,
   "directories": {
