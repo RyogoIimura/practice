@@ -21,7 +21,11 @@ body {
   .wrapper {
     overflow: hidden;
 
-    .contentss {
+    img, video {
+      width: 100%;
+    }
+
+    .contents {
       margin: calc(vw(94) + 16px) 0;
     }
   }
@@ -34,7 +38,7 @@ body {
 @media screen and (min-width: ($BREAKPOINT)) {
   body {
     .wrapper {
-      .contentss {
+      .contents {
         margin: 160px 0;
       }
     }
